@@ -7,7 +7,7 @@ let Categoria = require('../models/categorias');
 //===============================
 //Mostrar todas las categorias
 //===============================
-app.get('/categorias',(req,res)=>{
+app.get('/categorias',verficarToken,(req,res)=>{
     Categoria.find({})
     .sort('description')
     .populate('usuario','nombre email')
@@ -21,7 +21,7 @@ app.get('/categorias',(req,res)=>{
         Categoria.count({estado:true},(err,conteo) =>{
             res.json({
                 ok:true,
-                usuarios,
+                categorias,
                 conteo
             })
         })
@@ -48,10 +48,11 @@ app.get('/categoria/:id',(req, res) =>{
 //===============================
 //Crear nueva categoria
 //===============================
-app.post('/categoria',[verficarToken,verificarRol],(req,res)=>{
-    let description = req.params.descripcion;
+app.post('/categorias',[verficarToken,verificarRol],(req,res)=>{
+    let body = req.body
+    let descripcion = body.descripcion;
     let categoria = new Categoria({
-        descripcion:description,
+        descripcion,
         usuario:req.usuario._id
     });
     categoria.save((err,categoria)=>{
@@ -72,10 +73,10 @@ app.post('/categoria',[verficarToken,verificarRol],(req,res)=>{
 // Actualizar categoria
 //===============================
 app.put('/categoria/:id',[verficarToken,verificarRol],(req,res)=>{
-    let descripcion = req.params.descripcion;
+    let descripcion = req.body.descripcion;
     let id = req.params.id;
 
-    Categoria.findByIdAndUpdate(id,descripcion,{new:true,runValidators:true},(err,data)=>{
+    Categoria.findByIdAndUpdate(id,{descripcion:descripcion},{new:true,runValidators:true},(err,data)=>{
         if(err){
             return res.status(400).json({
                 ok:false,
@@ -94,7 +95,7 @@ app.put('/categoria/:id',[verficarToken,verificarRol],(req,res)=>{
 app.delete('/categoria/:id',[verficarToken,verificarRol],(req,res)=>{
     let id = req.params.id;
 
-    Categoria.findByIdAndDelete(id,(req,data)=>{
+    Categoria.findByIdAndDelete(id,(err,data)=>{
         if(err){
             return res.status(400).json({
                 ok:false,

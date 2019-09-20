@@ -6,7 +6,7 @@ var productosSchema = new Schema({
         type:String,
         required:[true,'El nombre es necesario']
     },
-    precioUnitario:{
+    precio:{
         type: Number,
         required:[true, 'El precio es necesario']
     },
@@ -14,14 +14,14 @@ var productosSchema = new Schema({
         type:String,
         required:false
     },
-    disponilbe:{
+    disponible:{
         type:Boolean,
         required:true,
         default:false
     },
     categoria:{
         type:Schema.Types.ObjectId,
-        ref:'Categora',
+        ref:'Categoria',
         required:true
     },
     usuario:{

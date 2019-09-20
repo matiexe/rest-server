@@ -8,9 +8,9 @@ let Producto = require('../models/productos');
 // Obtener todos los prodcutos
 //==============================
 app.get('/productos',verficarToken,(req,res)=>{
-    let desde = req.params.id || 0;
+    let desde = req.params.desde || 0;
     desde= Number(desde);
-    Producto.find({dispoble:true})
+    Producto.find({disponible:true})
     .skip(desde)
     .limit(5)
     .populate('usuario','nombre apellido')
@@ -51,11 +51,11 @@ app.get('/productos/:id',verficarToken,(req,res)=>{
 //==============================
 // Buscar Producto
 //==============================
-app.get('/proudctos/buscar/:termino',verficarToken,(req,res)=>{
+app.get('/productos/buscar/:termino',verficarToken,(req,res)=>{
     let termino = req.params.termino
     let regex = new RegExp(termino,'i');
     Producto.find({nombre:regex})
-    .populate('usuario','nombre apellido')
+    //.populate('usuario','nombre apellido')
     .populate('categoria','descripcion')
     .exec((err,productos)=>{
         if(err){
@@ -81,7 +81,7 @@ app.post('/productos',verficarToken,(req,res)=>{
         precio : body.precio,
         descripcion:body.descripcion,
         disponible : true,
-        categoria : req.categoria._id,
+        categoria : body.categoria,
         usuario: req.usuario._id
     });
     producto.save((err,producto)=>{
@@ -109,7 +109,6 @@ app.put('/productos/:id',verficarToken,(req,res)=>{
         nombre:body.nombre,
         precio:body.precio,
         descripcion :body.descripcion,
-        descripcion: body.disponible
     };
 
     Producto.findByIdAndUpdate(id,producto,{new:true,runValidators:true},(err,producto)=>{
@@ -150,3 +149,5 @@ app.delete('/producto/:id',verficarToken,(req,res)=>{
         })
     });
 });
+
+module.exports = app;

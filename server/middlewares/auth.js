@@ -21,14 +21,14 @@ let verficarToken = (req,res,next)=>{
 
 ///Verifica ADMIN ROLE
 
-let verificarRol =(req,res,next0)=>{
+let verificarRol =(req,res,next)=>{
     let usuario = req.usuario;
-    if(usuario.rol==='ADMIN_ROL'){
+    if(usuario.role ==='ADMIN_ROLE'){
         next();
     }else{
         res.status(401).json({
             ok:false,
-            err
+            err :'el usuario no posee permisos para realizar esta accion'
         })
     }
     

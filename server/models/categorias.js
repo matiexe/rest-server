@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 let categoriaSchema = new Schema({
-    description:{
+    descripcion:{
         type: String,
         unique:true,
         required:[true,'la descripcion es necesaria']
