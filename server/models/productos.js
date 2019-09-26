@@ -14,6 +14,9 @@ var productosSchema = new Schema({
         type:String,
         required:false
     },
+    img:{
+        type:String
+    },
     disponible:{
         type:Boolean,
         required:true,

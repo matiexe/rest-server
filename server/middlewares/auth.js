@@ -34,7 +34,16 @@ let verificarRol =(req,res,next)=>{
     
 
 }
+
+///Verifica token imagen
+let verficarTokenImg = (req, res, next)=>{
+    let token = req.query.token;
+    res.json({
+        token
+    })
+}
 module.exports = {
+    verficarTokenImg,
     verficarToken,
     verificarRol
 }
